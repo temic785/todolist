@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {Button} from "./Button";
+import {FilterValuesType} from "./App";
 
 export type TaskType = {
     id: number;
@@ -12,9 +13,11 @@ type TodoListPopsType = {
     titleH3: string;
     arr: TaskType[];
     removeTask: (taskId: number) => void;
+    changeFilter: (newFilterValue: FilterValuesType) => void
+
 };
 
-export const TodoList = ({titleH3, removeTask, arr}: TodoListPopsType) => {
+export const TodoList = ({titleH3, removeTask, arr, changeFilter}: TodoListPopsType) => {
     const taskList: Array<JSX.Element> = arr.map((arr) => {
         return (
             <li key={arr.id}>
@@ -40,12 +43,10 @@ export const TodoList = ({titleH3, removeTask, arr}: TodoListPopsType) => {
                     <ul>{taskList}</ul>
                 )}
                 <div>
-                    <Button title="All" onClickHandler={() => {
-                    }}/>
-                    <Button title="Active" onClickHandler={() => {
-                    }}/>
-                    <Button title="Completed" onClickHandler={() => {
-                    }}/>
+                    <Button title="All" onClickHandler={() => changeFilter("all")}/>
+                    <Button title="Active" onClickHandler={() => changeFilter("active")}/>
+                    <Button title="Completed" onClickHandler={() => changeFilter("completed")}/>
+
                 </div>
             </div>
         </TodoListStyled>

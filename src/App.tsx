@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import "./App.css";
 import {TaskType, TodoList} from "./TodoList";
-import {TasksTypePractice, TodoListPractice} from "./TodoListPractice";
+
+export type FilterValuesType = "all" | "active" | "completed"
 
 function App() {
     // const data1 = {
@@ -123,14 +124,23 @@ function App() {
         {id: 3, title: "React", isActive: false},
     ]);
     const removeTask = (taskId: number) => {
-        const filterTasks = tasks.filter(task => {
-            return task.id !== taskId;
+        const filterTasks = tasks.filter(t => {
+            return t.id !== taskId;
         })
         setTasks(filterTasks);
     }
 
-    const [filter, setFilter] = useState("all")
+    const [filter, setFilter] = useState<FilterValuesType>("all")
 
+    let tasksForTodoList: Array<TaskType> = tasks
+    if (filter === "active") {
+        tasksForTodoList = tasks.filter(t => t.isActive === false)
+    }
+    if (filter === "completed") {
+        tasksForTodoList = tasks.filter(t => t.isActive === true)
+    }
+
+    const changeFilterValue = (newFilterValue: FilterValuesType) => setFilter(newFilterValue)
     // let [tasks2, setTasks] = useState<TasksTypePractice[]>([
     //     {id: 1, title: "Pizza", isActive: true},
     //     {id: 2, title: "Cola", isActive: false},
@@ -155,7 +165,7 @@ function App() {
         <div className="App">
             {/*<Tasks data={data1} />*/}
             {/*<Tasks data={data2} />*/}
-            <TodoList arr={tasks} titleH3="What to learn?" removeTask={removeTask}/>
+            <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask} changeFilter={changeFilterValue}/>
             {/*<TodoListPractice tasks={tasks2} titleH3={"What to eat?"} removeTask={removeTask}/>*/}
             {/*<TodoList arr={tasks2} titleH3="What to eat?" />*/}
             {/*<TodoList arr={tasks3} titleH3="What to watch?" />*/}
