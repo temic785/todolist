@@ -144,14 +144,13 @@ function App() {
     const changeFilterValue = (newFilterValue: FilterValuesType) => setFilter(newFilterValue)
 
 
-    const addTask = (title:string) => {
-        console.log(title)
+    const addTask = (title: string) => {
         let newTask: TaskType = {
             id: v1(),
             title: title,
             isActive: false,
         }
-        const newState = [...tasks,newTask]
+        const newState = [...tasks, newTask]
         setTasks(newState)
     }
 
@@ -179,7 +178,8 @@ function App() {
         <div className="App">
             {/*<Tasks data={data1} />*/}
             {/*<Tasks data={data2} />*/}
-            <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask} changeFilter={changeFilterValue} addTask={addTask}/>
+            <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask}
+                      changeFilter={changeFilterValue} addTask={addTask}/>
             {/*<TodoListPractice tasks={tasks2} titleH3={"What to eat?"} removeTask={removeTask}/>*/}
             {/*<TodoList arr={tasks2} titleH3="What to eat?" />*/}
             {/*<TodoList arr={tasks3} titleH3="What to watch?" />*/}

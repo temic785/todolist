@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, KeyboardEvent} from "react";
 import styled from "styled-components";
 import {Button} from "./Button";
 import {FilterValuesType} from "./App";
@@ -20,8 +20,21 @@ type TodoListPopsType = {
 
 export const TodoList = ({titleH3, removeTask, arr, changeFilter, addTask}: TodoListPopsType) => {
 
+    const [taskTitle, setTaskTitle] = useState("");
+    const isTitleLengthValid = taskTitle.length <= 15
+
+    const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            addTaskHandler();
+        }
+    }
+
     const addTaskHandler = () => {
-        addTask("new task");
+        if (isTitleLengthValid) {
+            addTask(taskTitle);
+            setTaskTitle("");
+        }
+
     }
 
 
@@ -43,8 +56,10 @@ export const TodoList = ({titleH3, removeTask, arr, changeFilter, addTask}: Todo
             <div>
                 <h3>{titleH3}</h3>
                 <div>
-                    <input/>
-                    <Button onClickHandler={addTaskHandler} title="+"/>
+                    <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}
+                           onChange={(e) => setTaskTitle(e.target.value)}/>
+                    <Button disabled={!isTitleLengthValid} onClickHandler={addTaskHandler} title="+"/>
+                    {!isTitleLengthValid && <div>Max length title is 15 characters</div>}
                 </div>
                 {arr.length === 0 ? (
                     <p>your tasks were not found</p>
