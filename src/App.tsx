@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./App.css";
 import {TaskType, TodoList} from "./TodoList";
+import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -119,11 +120,11 @@ function App() {
     //   ],
     // };
     let [tasks, setTasks] = useState<TaskType[]>([
-        {id: 1, title: "HTML&CSS", isActive: true},
-        {id: 2, title: "JS", isActive: true},
-        {id: 3, title: "React", isActive: false},
+        {id: v1(), title: "HTML&CSS", isActive: true},
+        {id: v1(), title: "JS", isActive: true},
+        {id: v1(), title: "React", isActive: false},
     ]);
-    const removeTask = (taskId: number) => {
+    const removeTask = (taskId: string) => {
         const filterTasks = tasks.filter(t => {
             return t.id !== taskId;
         })
@@ -134,13 +135,26 @@ function App() {
 
     let tasksForTodoList: Array<TaskType> = tasks
     if (filter === "active") {
-        tasksForTodoList = tasks.filter(t => t.isActive === false)
+        tasksForTodoList = tasks.filter(t => t.isActive === false);
     }
     if (filter === "completed") {
-        tasksForTodoList = tasks.filter(t => t.isActive === true)
+        tasksForTodoList = tasks.filter(t => t.isActive === true);
     }
 
     const changeFilterValue = (newFilterValue: FilterValuesType) => setFilter(newFilterValue)
+
+
+    const addTask = (title:string) => {
+        console.log(title)
+        let newTask: TaskType = {
+            id: v1(),
+            title: title,
+            isActive: false,
+        }
+        const newState = [...tasks,newTask]
+        setTasks(newState)
+    }
+
     // let [tasks2, setTasks] = useState<TasksTypePractice[]>([
     //     {id: 1, title: "Pizza", isActive: true},
     //     {id: 2, title: "Cola", isActive: false},
@@ -165,7 +179,7 @@ function App() {
         <div className="App">
             {/*<Tasks data={data1} />*/}
             {/*<Tasks data={data2} />*/}
-            <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask} changeFilter={changeFilterValue}/>
+            <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask} changeFilter={changeFilterValue} addTask={addTask}/>
             {/*<TodoListPractice tasks={tasks2} titleH3={"What to eat?"} removeTask={removeTask}/>*/}
             {/*<TodoList arr={tasks2} titleH3="What to eat?" />*/}
             {/*<TodoList arr={tasks3} titleH3="What to watch?" />*/}

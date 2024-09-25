@@ -20,8 +20,15 @@ type TodoListPopsType = {
 
 export const TodoList = ({titleH3, removeTask, arr, changeFilter, addTask}: TodoListPopsType) => {
 
+    const inputRef = React.useRef<HTMLInputElement>(null);
+
+
     const addTaskHandler = () => {
-        addTask("new task");
+        if (inputRef.current) {
+            console.log("dasf")
+
+            addTask(inputRef.current.value);
+        }
     }
 
 
@@ -43,7 +50,7 @@ export const TodoList = ({titleH3, removeTask, arr, changeFilter, addTask}: Todo
             <div>
                 <h3>{titleH3}</h3>
                 <div>
-                    <input/>
+                    <input ref={inputRef} placeholder={"max length title is 15 characters"}/>
                     <Button onClickHandler={addTaskHandler} title="+"/>
                 </div>
                 {arr.length === 0 ? (
