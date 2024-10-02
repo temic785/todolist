@@ -124,11 +124,28 @@ function App() {
         {id: v1(), title: "JS", isActive: true},
         {id: v1(), title: "React", isActive: false},
     ]);
+
+
+    const addTask = (title: string) => {
+        let newTask: TaskType = {
+            id: v1(),
+            title: title,
+            isActive: false,
+        }
+        const newState = [...tasks, newTask]
+        setTasks(newState)
+    }
+
     const removeTask = (taskId: string) => {
         const filterTasks = tasks.filter(t => {
             return t.id !== taskId;
         })
         setTasks(filterTasks);
+    }
+
+    const setTaskNewStatus = (taskId: string, isDone: boolean) => {
+        const nexState: Array<TaskType> = tasks.map(t => t.id === taskId ? {...t, isActive: isDone} : t)
+        setTasks(nexState)
     }
 
     const [filter, setFilter] = useState<FilterValuesType>("all")
@@ -143,16 +160,6 @@ function App() {
 
     const changeFilterValue = (newFilterValue: FilterValuesType) => setFilter(newFilterValue)
 
-
-    const addTask = (title: string) => {
-        let newTask: TaskType = {
-            id: v1(),
-            title: title,
-            isActive: false,
-        }
-        const newState = [...tasks, newTask]
-        setTasks(newState)
-    }
 
     // let [tasks2, setTasks] = useState<TasksTypePractice[]>([
     //     {id: 1, title: "Pizza", isActive: true},
@@ -179,7 +186,7 @@ function App() {
             {/*<Tasks data={data1} />*/}
             {/*<Tasks data={data2} />*/}
             <TodoList arr={tasksForTodoList} titleH3="What to learn?" removeTask={removeTask}
-                      changeFilter={changeFilterValue} addTask={addTask}/>
+                      changeFilter={changeFilterValue} addTask={addTask} setTaskNewStatus={setTaskNewStatus} filter={filter} />
             {/*<TodoListPractice tasks={tasks2} titleH3={"What to eat?"} removeTask={removeTask}/>*/}
             {/*<TodoList arr={tasks2} titleH3="What to eat?" />*/}
             {/*<TodoList arr={tasks3} titleH3="What to watch?" />*/}

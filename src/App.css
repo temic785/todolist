@@ -1,24 +1,44 @@
 .App {
-  padding: 30px;
-  display: flex;
+    padding: 30px;
+    display: flex;
 }
 
 .App > div {
-  margin-right: 50px;
+    margin-right: 50px;
 }
 
 .error {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .error-message {
-  color: red;
+    color: red;
 }
 
 .active-filter {
-  background-color: aquamarine;
+    background-color: aquamarine;
 }
 
 .is-done {
-  opacity: 0.5;
+    opacity: 0.5;
+}
+
+.task {
+    font-weight: bold;
+}
+
+.task-done {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.filter-button {
+    color: white;
+    font-weight: bold;
+    background-color: #7f4f9f;
+    border: 2px solid #7f4f9f;
+    border-radius: 2px;
+}
+.error-input{
+    border: 2px solid red;
 }
