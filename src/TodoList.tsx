@@ -30,7 +30,8 @@ export const TodoList = ({
                              addTask,
                              setTaskNewStatus,
                              filter,
-                             todoListId
+                             todoListId,
+                             removeTodoList,
                          }: TodoListPopsType) => {
 
     const [taskTitle, setTaskTitle] = useState("");
@@ -54,10 +55,7 @@ export const TodoList = ({
             setTaskInputError(true);
             setTaskTitle("");
         }
-
-
     }
-
 
     const taskList: Array<JSX.Element> = tasks.map((arr: TaskType) => {
 
@@ -80,8 +78,10 @@ export const TodoList = ({
     return (
         <TodoListStyled>
             <div>
-
-                <h3>{titleH3}</h3>
+                <h3>
+                    {titleH3}
+                    <Button title={"X"} onClickHandler={() => removeTodoList(todoListId)}/>
+                </h3>
 
                 <div>
                     <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}
