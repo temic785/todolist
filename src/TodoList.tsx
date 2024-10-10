@@ -10,24 +10,27 @@ export type TaskType = {
 };
 
 type TodoListPopsType = {
+    todoListId: string
     titleH3: string;
     filter: FilterValuesType;
-    arr: TaskType[];
-    removeTask: (taskId: string) => void;
-    changeFilter: (newFilterValue: FilterValuesType) => void;
-    addTask: (title: string) => void;
-    setTaskNewStatus: (taskId: string, isDone: boolean) => void;
+    tasks: TaskType[];
+    removeTask: (taskId: string, todoListId: string) => void;
+    changeTodoListFilter: (newFilterValue: FilterValuesType, todoListId: string) => void;
+    addTask: (title: string, todoListId: string) => void;
+    setTaskNewStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
+    removeTodoList: (todoListId: string) => void
 
 };
 
 export const TodoList = ({
                              titleH3,
                              removeTask,
-                             arr,
-                             changeFilter,
+                             tasks,
+                             changeTodoListFilter,
                              addTask,
                              setTaskNewStatus,
-                             filter
+                             filter,
+                             todoListId
                          }: TodoListPopsType) => {
 
     const [taskTitle, setTaskTitle] = useState("");
@@ -44,7 +47,7 @@ export const TodoList = ({
         const croppedTaskTitle = taskTitle.trim();
         if (croppedTaskTitle) {
             if (isTitleLengthValid) {
-                addTask(taskTitle);
+                addTask(croppedTaskTitle, todoListId);
                 setTaskTitle("");
             }
         } else {
@@ -56,11 +59,11 @@ export const TodoList = ({
     }
 
 
-    const taskList: Array<JSX.Element> = arr.map((arr: TaskType) => {
+    const taskList: Array<JSX.Element> = tasks.map((arr: TaskType) => {
 
-                const removeTaskHandler = () => removeTask(arr.id)
+                const removeTaskHandler = () => removeTask(arr.id, todoListId)
                 const setTaskNewStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                    setTaskNewStatus(arr.id, e.currentTarget.checked);
+                    setTaskNewStatus(arr.id, e.currentTarget.checked, todoListId);
                 }
                 return (
                     <li key={arr.id}>
@@ -77,7 +80,9 @@ export const TodoList = ({
     return (
         <TodoListStyled>
             <div>
+
                 <h3>{titleH3}</h3>
+
                 <div>
                     <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}
                            onChange={(e) => {
@@ -90,18 +95,18 @@ export const TodoList = ({
                     {!isTitleLengthValid && <div style={{color: "red"}}>Max length title is 15 characters</div>}
                     {taskInputError && <div style={{color: "red"}} color={"red"}>Title is required!!!</div>}
                 </div>
-                {arr.length === 0 ? (
+                {tasks.length === 0 ? (
                     <p>your tasks were not found</p>
                 ) : (
                     <ul>{taskList}</ul>
                 )}
                 <div>
                     <Button className={filter === "all" ? "filter-button" : ""} title="All"
-                            onClickHandler={() => changeFilter("all")}/>
+                            onClickHandler={() => changeTodoListFilter("all", todoListId)}/>
                     <Button className={filter === "active" ? "filter-button" : ""} title="Active"
-                            onClickHandler={() => changeFilter("active")}/>
+                            onClickHandler={() => changeTodoListFilter("active", todoListId)}/>
                     <Button className={filter === "completed" ? "filter-button" : ""} title="Completed"
-                            onClickHandler={() => changeFilter("completed")}/>
+                            onClickHandler={() => changeTodoListFilter("completed", todoListId)}/>
 
                 </div>
             </div>
