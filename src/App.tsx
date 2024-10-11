@@ -107,15 +107,17 @@ function App() {
 
 
                     return (
-                        <TodoList todoListId={tl.id}
-                                  titleH3={tl.title}
-                                  tasks={filteredTasks}
-                                  filter={tl.filter}
-                                  removeTask={removeTask}
-                                  changeTodoListFilter={changeTodoListFilter}
-                                  addTask={addTask}
-                                  setTaskNewStatus={setTaskNewStatus}
-                                  removeTodoList={removeTodoList}
+                        <TodoList
+                            key={tl.id}
+                            todoListId={tl.id}
+                            titleH3={tl.title}
+                            tasks={filteredTasks}
+                            filter={tl.filter}
+                            removeTask={removeTask}
+                            changeTodoListFilter={changeTodoListFilter}
+                            addTask={addTask}
+                            setTaskNewStatus={setTaskNewStatus}
+                            removeTodoList={removeTodoList}
                         />
                     )
                 })
