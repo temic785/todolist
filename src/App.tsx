@@ -9,7 +9,6 @@ type TodoListType = {
     title: string,
     id: string,
     filter: FilterValuesType,
-    tasks: TaskType[];
 }
 
 export type TasksStateType = {
@@ -27,13 +26,11 @@ function App() {
             id: todoListId_1,
             title: "What to learn?",
             filter: "all",
-            tasks: []
         },
         {
             id: todoListId_2,
             title: "What to buy?",
             filter: "all",
-            tasks: []
         }
     ])
 
@@ -55,6 +52,7 @@ function App() {
         }
     )
 
+    //task
     const addTask = (title: string, todoListId: string) => {
         let newTask: TaskType = {
             id: v1(),
@@ -77,19 +75,22 @@ function App() {
         delete tasks[todoListId]
     }
 
+    //todolist
 
-    // const changeFilterValue = (newFilterValue: FilterValuesType, todoListId: string) => setFilter(newFilterValue)
+    const addTodoList = (title: string) => {
+        const todoListId = v1()
+        const newTodoList: TodoListType = {
+            id: todoListId,
+            title: title,
+            filter: "all"
+        }
+        setTodoLists([...todoLists, newTodoList])
+        setTasks({...tasks, [todoListId]: []})
+    }
 
     const changeTodoListFilter = (newFilterValue: FilterValuesType, todoListId: string) => setTodoLists(
         todoLists.map(tl => tl.id === todoListId ? {...tl, filter: newFilterValue} : tl)
     )
-
-    // const tasks3: Array<ArrLiPropsType> = [
-    //   { id: 1, title: "Naruto", isActive: true },
-    //   { id: 2, title: "One Piece", isActive: true },
-    //   { id: 3, title: "Death Note", isActive: false },
-    // ];
-    // const tasks4: Array<ArrLiPropsType> = [];
 
     return (
         <div className="App">

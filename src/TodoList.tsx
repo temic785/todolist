@@ -2,6 +2,7 @@ import React, {useState, KeyboardEvent, ChangeEvent} from "react";
 import styled from "styled-components";
 import {Button} from "./Button";
 import {FilterValuesType} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string;
@@ -34,27 +35,18 @@ export const TodoList = ({
                              removeTodoList,
                          }: TodoListPopsType) => {
 
-    const [taskTitle, setTaskTitle] = useState("");
-    const [taskInputError, setTaskInputError] = useState(false);
-    const isTitleLengthValid = taskTitle.length <= 15
+    // const [taskTitle, setTaskTitle] = useState("");
+    // const [taskInputError, setTaskInputError] = useState(false);
+    // const isTitleLengthValid = taskTitle.length <= 15
 
-    const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            addTaskHandler();
-        }
-    }
+    // const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    //     if (e.key === "Enter") {
+    //         addTaskHandler();
+    //     }
+    // }
 
-    const addTaskHandler = () => {
-        const croppedTaskTitle = taskTitle.trim();
-        if (croppedTaskTitle) {
-            if (isTitleLengthValid) {
-                addTask(croppedTaskTitle, todoListId);
-                setTaskTitle("");
-            }
-        } else {
-            setTaskInputError(true);
-            setTaskTitle("");
-        }
+    const addTaskHandler = (taskTitle: string) => {
+        addTask(taskTitle, todoListId);
     }
 
     const taskList: Array<JSX.Element> = tasks.map((arr: TaskType) => {
@@ -83,18 +75,19 @@ export const TodoList = ({
                     <Button title={"X"} onClickHandler={() => removeTodoList(todoListId)}/>
                 </h3>
 
-                <div>
-                    <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}
-                           onChange={(e) => {
-                               taskInputError && setTaskInputError(false);
-                               setTaskTitle(e.target.value)
-                           }}
-                           className={taskInputError ? "error-input" : ""}
-                    />
-                    <Button disabled={!isTitleLengthValid} onClickHandler={addTaskHandler} title="+"/>
-                    {!isTitleLengthValid && <div style={{color: "red"}}>Max length title is 15 characters</div>}
-                    {taskInputError && <div style={{color: "red"}} color={"red"}>Title is required!!!</div>}
-                </div>
+                <AddItemForm addItem={addTaskHandler}/>
+                {/*<div>*/}
+                {/*    <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}*/}
+                {/*           onChange={(e) => {*/}
+                {/*               taskInputError && setTaskInputError(false);*/}
+                {/*               setTaskTitle(e.target.value)*/}
+                {/*           }}*/}
+                {/*           className={taskInputError ? "error-input" : ""}*/}
+                {/*    />*/}
+                {/*    <Button disabled={!isTitleLengthValid} onClickHandler={addTaskHandler} title="+"/>*/}
+                {/*    {!isTitleLengthValid && <div style={{color: "red"}}>Max length title is 15 characters</div>}*/}
+                {/*    {taskInputError && <div style={{color: "red"}} color={"red"}>Title is required!!!</div>}*/}
+                {/*</div>*/}
                 {tasks.length === 0 ? (
                     <p>your tasks were not found</p>
                 ) : (
