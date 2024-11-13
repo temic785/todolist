@@ -69,7 +69,6 @@ export const TodoList = ({
 
     return (
         <TodoListStyled>
-            <span></span>
             <div>
                 <h3>
                     {titleH3}
@@ -77,18 +76,7 @@ export const TodoList = ({
                 </h3>
 
                 <AddItemForm addItem={addTaskHandler}/>
-                {/*<div>*/}
-                {/*    <input onKeyDown={onKeyDownAddTaskHandler} placeholder={"max 15 characters"} value={taskTitle}*/}
-                {/*           onChange={(e) => {*/}
-                {/*               taskInputError && setTaskInputError(false);*/}
-                {/*               setTaskTitle(e.target.value)*/}
-                {/*           }}*/}
-                {/*           className={taskInputError ? "error-input" : ""}*/}
-                {/*    />*/}
-                {/*    <Button disabled={!isTitleLengthValid} onClickHandler={addTaskHandler} title="+"/>*/}
-                {/*    {!isTitleLengthValid && <div style={{color: "red"}}>Max length title is 15 characters</div>}*/}
-                {/*    {taskInputError && <div style={{color: "red"}} color={"red"}>Title is required!!!</div>}*/}
-                {/*</div>*/}
+
                 {tasks.length === 0 ? (
                     <p>your tasks were not found</p>
                 ) : (
