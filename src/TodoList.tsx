@@ -1,4 +1,4 @@
-import React, {useState, KeyboardEvent, ChangeEvent} from "react";
+import React, {ChangeEvent} from "react";
 import styled from "styled-components";
 import {Button} from "./Button";
 import {FilterValuesType} from "./App";
@@ -35,15 +35,6 @@ export const TodoList = ({
                              removeTodoList,
                          }: TodoListPopsType) => {
 
-    // const [taskTitle, setTaskTitle] = useState("");
-    // const [taskInputError, setTaskInputError] = useState(false);
-    // const isTitleLengthValid = taskTitle.length <= 15
-
-    // const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    //     if (e.key === "Enter") {
-    //         addTaskHandler();
-    //     }
-    // }
 
     const addTaskHandler = (taskTitle: string) => {
         addTask(taskTitle, todoListId);
