@@ -93,6 +93,15 @@ function App() {
         todoLists.map(tl => tl.id === todoListId ? {...tl, filter: newFilterValue} : tl)
     )
 
+    const updateTodoList = (todoListId: string, title: string) => {
+        setTodoLists(todoLists.map(tl => (tl.id === todoListId ? {...tl, title: title} : tl)))
+    }
+    const updateTask = (todoListId: string, taskId: string, title: string) => {
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].map(tasks => tasks.id === taskId ? {...tasks, title} : tasks)
+        })
+    }
     return (
         <div className="App">
             <AddItemForm addItem={addTodoList}/>
@@ -120,6 +129,8 @@ function App() {
                             addTask={addTask}
                             setTaskNewStatus={setTaskNewStatus}
                             removeTodoList={removeTodoList}
+                            updateTodoList={updateTodoList}
+                            updateTask={updateTask}
                         />
                     )
                 })

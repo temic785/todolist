@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {Button} from "./Button";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 export type TaskType = {
     id: string;
@@ -20,6 +21,8 @@ type TodoListPopsType = {
     addTask: (title: string, todoListId: string) => void;
     setTaskNewStatus: (taskId: string, isDone: boolean, todoListId: string) => void;
     removeTodoList: (todoListId: string) => void
+    updateTodoList: (todoListId: string, title: string) => void
+    updateTask: (todoListId: string, taskId: string, title: string) => void
 
 };
 
@@ -33,11 +36,16 @@ export const TodoList = ({
                              filter,
                              todoListId,
                              removeTodoList,
+                             updateTodoList,
+                             updateTask
                          }: TodoListPopsType) => {
 
 
     const addTaskHandler = (taskTitle: string) => {
         addTask(taskTitle, todoListId);
+    }
+    const updateTodoListHandler = (title: string) => {
+        updateTodoList(todoListId, title)
     }
 
     const taskList: Array<JSX.Element> = tasks.map((arr: TaskType) => {
@@ -46,10 +54,14 @@ export const TodoList = ({
                 const setTaskNewStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                     setTaskNewStatus(arr.id, e.currentTarget.checked, todoListId);
                 }
+                const updateTaskHandler = (title: string) => {
+                    updateTask(todoListId, arr.id, title)
+                }
                 return (
                     <li key={arr.id}>
                         <input type="checkbox" checked={arr.isActive} onChange={setTaskNewStatusHandler}/>
-                        <span className={arr.isActive ? "task-done" : "task"}>{arr.title}</span>
+                        <EditableSpan value={arr.title} className={arr.isActive ? "task-done" : "task"}
+                                      onChange={updateTaskHandler}/>
                         <Button title={"X"} onClickHandler={removeTaskHandler}/>
 
                     </li>
@@ -62,7 +74,7 @@ export const TodoList = ({
         <TodoListStyled>
             <div>
                 <h3>
-                    {titleH3}
+                    <EditableSpan value={titleH3} onChange={updateTodoListHandler}/>
                     <Button title={"X"} onClickHandler={() => removeTodoList(todoListId)}/>
                 </h3>
 
