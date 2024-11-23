@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
+import {Input} from "@mui/material";
 
 type EditableSpanPropsType = {
     value: string
@@ -7,7 +8,7 @@ type EditableSpanPropsType = {
 }
 
 
-export const EditableSpan = ({value, className,onChange}: EditableSpanPropsType) => {
+export const EditableSpan = ({value, className, onChange}: EditableSpanPropsType) => {
     const [editMode, setEditMode] = useState(false);
     const [title, setTitle] = useState("");
 
@@ -26,7 +27,8 @@ export const EditableSpan = ({value, className,onChange}: EditableSpanPropsType)
     return (
         <>
             {editMode ?
-                <input onChange={changeTitleHandler} value={title} onBlur={deactivateEditModeHandler} autoFocus/> :
+                <Input
+                    onChange={changeTitleHandler} value={title} onBlur={deactivateEditModeHandler} autoFocus/> :
                 <span onDoubleClick={activateEditModeHandler} className={className}>{value}</span>}
         </>
     );

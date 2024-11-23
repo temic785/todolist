@@ -1,12 +1,14 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {Button} from "./Button";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import {IconButton, TextField} from "@mui/material";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void,
 }
 
 
-export const AddItemForm = ({addItem}:AddItemFormPropsType) => {
+export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
 
     const [itemTitle, setItemTitle] = useState("");
     const [error, setError] = useState(false);
@@ -38,11 +40,17 @@ export const AddItemForm = ({addItem}:AddItemFormPropsType) => {
 
     return (
         <div>
-            <input onKeyDown={onKeyDownAddItemHandler} placeholder={"max 15 characters"} value={itemTitle}
-                   onChange={changeItemTitleHandler}
-                   className={error ? "error-input" : ""}
+            <TextField variant="outlined" onKeyDown={onKeyDownAddItemHandler} placeholder={"max 15 characters"}
+                       size={"small"}
+                       value={itemTitle}
+                       onChange={changeItemTitleHandler}
+                       error={!!error}
+                       helperText={error}
+                // className={error ? "error-input" : ""}
             />
-            <Button disabled={!isTitleLengthValid} onClickHandler={addItemHandler} title="+"/>
+            <IconButton disabled={!isTitleLengthValid} onClick={addItemHandler}>
+                <AddBoxIcon>+</AddBoxIcon>
+            </IconButton>
             {!isTitleLengthValid && <div style={{color: "red"}}>Max length title is 15 characters</div>}
             {error && <div style={{color: "red"}} color={"red"}>Title is required!!!</div>}
         </div>

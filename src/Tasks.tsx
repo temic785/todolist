@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "./Button";
-import { TodoListStyled } from "./TodoList";
 
 type TaskListPropsType = {
   taskId: number;
@@ -19,7 +18,7 @@ type TasksPropsType = {
 
 export const Tasks = (props: TasksPropsType) => {
   return (
-    <TodoListStyled>
+    <div>
       <div>
         <h3>{props.data.title}</h3>
         <div>
@@ -47,35 +46,7 @@ export const Tasks = (props: TasksPropsType) => {
           <Button title="Completed" />
         </div>
       </div>
-    </TodoListStyled>
+    </div>
   );
 };
-{
-  /* <div>
-  <h3>{props.data.title}</h3>
-  <div>
-    <input />
-    <Button title="+" />
-  </div>
 
-  <ul>
-    {props.data.tasks.map((tasks) => (
-      <li key={tasks.taskId}>
-        <input type="checkbox" checked={tasks.isDone} />
-        <span>{tasks.title} </span>
-      </li>
-    ))}
-  </ul>
-  <div>
-    <b>Student List:</b>
-    {props.data.students.map((students) => (
-      <p>{students}</p>
-    ))}
-  </div>
-  <div>
-    <Button title="All" />
-    <Button title="Active" />
-    <Button title="Completed" />
-  </div>
-</div>; */
-}
