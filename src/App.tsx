@@ -15,7 +15,7 @@ import {deepPurple, green} from "@mui/material/colors";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-type TodoListType = {
+export type TodoListType = {
     title: string,
     id: string,
     filter: FilterValuesType,
@@ -80,9 +80,11 @@ function App() {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskId ? {...t, isActive: isDone} : t)})
     }
 
-    const removeTodoList = (todoListId: string) => {
-        setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
-        delete tasks[todoListId]
+    const updateTask = (todoListId: string, taskId: string, title: string) => {
+        setTasks({
+            ...tasks,
+            [todoListId]: tasks[todoListId].map(tasks => tasks.id === taskId ? {...tasks, title} : tasks)
+        })
     }
 
     //todolist
@@ -98,19 +100,19 @@ function App() {
         setTasks({...tasks, [todoListId]: []})
     }
 
+    const removeTodoList = (todoListId: string) => {
+        setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
+        delete tasks[todoListId]
+    }
+
     const changeTodoListFilter = (newFilterValue: FilterValuesType, todoListId: string) => setTodoLists(
         todoLists.map(tl => tl.id === todoListId ? {...tl, filter: newFilterValue} : tl)
     )
 
-    const updateTodoList = (todoListId: string, title: string) => {
+    const changeTodoListTitle = (todoListId: string, title: string) => {
         setTodoLists(todoLists.map(tl => (tl.id === todoListId ? {...tl, title: title} : tl)))
     }
-    const updateTask = (todoListId: string, taskId: string, title: string) => {
-        setTasks({
-            ...tasks,
-            [todoListId]: tasks[todoListId].map(tasks => tasks.id === taskId ? {...tasks, title} : tasks)
-        })
-    }
+
     const [isDark, setIsDark] = useState<boolean>(false)
 
     const theme = createTheme({
@@ -172,7 +174,7 @@ function App() {
                                                 addTask={addTask}
                                                 setTaskNewStatus={setTaskNewStatus}
                                                 removeTodoList={removeTodoList}
-                                                updateTodoList={updateTodoList}
+                                                updateTodoList={changeTodoListTitle}
                                                 updateTask={updateTask}
                                             />
                                         </Paper>
