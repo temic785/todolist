@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import  {ChangeEvent, useState} from "react";
 import {Input} from "@mui/material";
 
 type EditableSpanPropsType = {

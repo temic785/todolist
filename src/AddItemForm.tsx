@@ -1,5 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "./Button";
+import  {ChangeEvent, KeyboardEvent, useState} from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import {IconButton, TextField} from "@mui/material";
 
@@ -40,7 +39,7 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
 
     return (
         <div>
-            <TextField variant="outlined" onKeyDown={onKeyDownAddItemHandler} placeholder={"max 15 characters"}
+            <TextField variant="outlined" onKeyDown={onKeyDownAddItemHandler} label={"max 15 characters"}
                        size={"small"}
                        value={itemTitle}
                        onChange={changeItemTitleHandler}

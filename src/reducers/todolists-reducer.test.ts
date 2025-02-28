@@ -1,12 +1,6 @@
-import {
-    AddTodoListAC,
-    AddTodolistActionType, ChangeTodolistFilterActionType, ChangeTodolistTitleAC,
-    ChangeTodolistTitleActionType, RemoveTodolistAC,
-    RemoveTodolistActionType,
-    todolistsReducer
-} from "./todolists-reducer"
+import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer"
 import {v1} from "uuid"
-import {TodoListType} from "../App";
+import {TodoListType} from "../app/App.tsx";
 
 test("correct todolist should be removed", () => {
     let todolistId1 = v1()
@@ -18,14 +12,6 @@ test("correct todolist should be removed", () => {
         {id: todolistId2, title: "What to buy", filter: "all"},
     ]
 
-    // 2. Действие
-    // const action: RemoveTodolistActionType = {
-    //     type: "REMOVE-TODOLIST",
-    //     payload: {
-    //         todoListId: todolistId1,
-    //     },
-    // }
-    // const action:RemoveTodolistActionType=RemoveTodolistAC(todolistId1)
     const endState = todolistsReducer(startState, RemoveTodolistAC(todolistId1))
 
     // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
@@ -76,16 +62,10 @@ test("correct filter of todolist should be changed", () => {
         {id: todolistId2, title: "What to buy", filter: "all"},
     ]
 
-    // const action: ChangeTodolistFilterActionType = {
-    //     type: "CHANGE-TODOLIST-FILTER",
-    //     payload: {
-    //         todoListId: todolistId2,
-    //         filter: "completed",
-    //     },
-    // }
     const newFilter = "all"
     const endState = todolistsReducer(startState, ChangeTodolistTitleAC(todolistId2, newFilter))
 
     expect(endState[0].filter).toBe("all")
     expect(endState[1].filter).toBe(newFilter)
 })
+

@@ -1,12 +1,13 @@
-import React, {ChangeEvent} from "react";
-import {FilterValuesType} from "./App";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {ChangeEvent} from "react";
+
 import Button from "@mui/material/Button"
 import {Box, IconButton, List, ListItem, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
 import {filterButtonsContainerSx, getListItemSx} from "./Todolist.style";
+import {FilterValuesType} from "./app/App.tsx";
+import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string;
@@ -51,7 +52,7 @@ export const TodoList = ({
         updateTodoList(todoListId, title)
     }
 
-    const taskList: Array<JSX.Element> = tasks.map((arr: TaskType) => {
+    const taskList= tasks.map((arr: TaskType) => {
 
                 const removeTaskHandler = () => removeTask(arr.id, todoListId)
                 const setTaskNewStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
