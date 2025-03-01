@@ -1,6 +1,7 @@
 import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer"
 import {v1} from "uuid"
 import {TodoListType} from "../app/App.tsx";
+import {expect, test} from "vitest";
 
 test("correct todolist should be removed", () => {
     let todolistId1 = v1()
@@ -31,7 +32,7 @@ test("correct todolist should be added", () => {
     ]
 
     const newTitle = "New Todolist"
-    const endState = todolistsReducer(startState, AddTodoListAC(newTitle, todolistId1))
+    const endState = todolistsReducer(startState, AddTodoListAC(newTitle))
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe(newTitle)

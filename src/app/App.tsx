@@ -88,10 +88,10 @@ function App() {
     //todolist
 
     const addTodoList = (title: string) => {
-        let todoListId = v1()
-        const action = AddTodoListAC(todoListId, title)
+        const action = AddTodoListAC(title)
         dispatchToTodolistReducer(action)
-        setTasks({...tasks, [action.payload.todoListId]: []})
+        setTasks({...tasks, [action.payload.id]: []})
+
     }
 
     const removeTodoList = (todoListId: string) => {
