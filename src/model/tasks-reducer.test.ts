@@ -2,8 +2,8 @@ import {beforeEach, expect, test} from "vitest";
 import {defineConfig} from "vitest/config";
 
 import {TasksStateType} from "../app/App.tsx";
-import {AddTaskAC, ChangeTaskStatusAC, RemoveTaskAC, tasksReducer, UpdateTaskNameAC} from "./tasks-reducer";
-import {AddTodoListAC, RemoveTodolistAC} from "./todolists-reducer";
+import {AddTaskAC, ChangeTaskStatusAC, RemoveTaskAC, tasksReducer, UpdateTaskNameAC} from "./tasks-reducer.ts";
+import {AddTodoListAC, RemoveTodolistAC} from "./todolists-reducer.ts";
 
 export default defineConfig({
     test: {
@@ -31,7 +31,7 @@ beforeEach(() => {
 })
 
 test("property with todolistId should be deleted", () => {
-    const endState = tasksReducer(startState, RemoveTodolistAC("todolistId2"))
+    const endState = tasksReducer(startState, RemoveTodolistAC({id:"todolistId2"}))
 
     const keys = Object.keys(endState)
 

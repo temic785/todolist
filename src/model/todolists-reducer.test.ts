@@ -1,11 +1,11 @@
-import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer"
-import {v1} from "uuid"
+import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer.ts"
 import {TodoListType} from "../app/App.tsx";
 import {expect, test} from "vitest";
+import {nanoid} from "@reduxjs/toolkit";
 
 test("correct todolist should be removed", () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    let todolistId1 = nanoid()
+    let todolistId2 = nanoid()
 
     // 1. Стартовый state
     const startState: TodoListType[] = [
@@ -13,7 +13,7 @@ test("correct todolist should be removed", () => {
         {id: todolistId2, title: "What to buy", filter: "all"},
     ]
 
-    const endState = todolistsReducer(startState, RemoveTodolistAC(todolistId1))
+    const endState = todolistsReducer(startState, RemoveTodolistAC({id: todolistId1}))
 
     // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
     // в массиве останется один тудулист
@@ -23,8 +23,8 @@ test("correct todolist should be removed", () => {
 })
 
 test("correct todolist should be added", () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    let todolistId1 = nanoid()
+    let todolistId2 = nanoid()
 
     const startState: TodoListType[] = [
         {id: todolistId1, title: "What to learn", filter: "all"},
@@ -39,8 +39,8 @@ test("correct todolist should be added", () => {
 })
 
 test("correct todolist should change its name", () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    let todolistId1 = nanoid()
+    let todolistId2 = nanoid()
 
     const startState: TodoListType[] = [
         {id: todolistId1, title: "What to learn", filter: "all"},
@@ -55,8 +55,8 @@ test("correct todolist should change its name", () => {
 })
 
 test("correct filter of todolist should be changed", () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    let todolistId1 = nanoid()
+    let todolistId2 = nanoid()
 
     const startState: TodoListType[] = [
         {id: todolistId1, title: "What to learn", filter: "all"},
