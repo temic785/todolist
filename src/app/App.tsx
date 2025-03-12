@@ -1,14 +1,12 @@
-import {useState} from "react";
 import "./App.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import {AddItemForm} from "../AddItemForm.tsx";
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import IconButton from "@mui/material/IconButton"
-import {Box, Container, createTheme, CssBaseline, Grid2, Paper, Switch, ThemeProvider} from "@mui/material";
+import {Box, Container, CssBaseline, Grid2, Paper, Switch, ThemeProvider} from "@mui/material";
 import {filterButtonsContainerSx} from "../Todolist.style.ts";
 import {MenuButton} from "../MenuButton.tsx";
-import {green} from "@mui/material/colors";
 import {
     AddTodoListAC,
     ChangeTodolistFilterAC,
@@ -21,6 +19,9 @@ import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {selectTodolists} from "../model/todolists-selectors.ts";
 import {selectTasks} from "../model/tasks-selectors.ts";
+import {selectThemeMode} from "./app-selectors.ts";
+import {changeThenModeAC} from "./app-reducer.ts";
+import {getTheme} from "../common/theme/theme.ts";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -33,14 +34,20 @@ export type TodoListType = {
 export type TasksStateType = {
     [todoListId: string]: TaskType[];
 }
+export type ThemeMode = "dark" | "light"
+
 
 export const App = () => {
 
 
     const todoLists = useAppSelector(selectTodolists)
     let tasks = useAppSelector(selectTasks)
+    let themeMode = useAppSelector(selectThemeMode)
 
     const dispatch = useAppDispatch()
+
+    const theme = getTheme(themeMode)
+
 
     // const [todoLists, dispatchToTodolistReducer] = useReducer(todolistsReducer, [
     //     {id: todoListId_1, title: "What to learn?", filter: "all",},
@@ -102,18 +109,11 @@ export const App = () => {
         dispatch(ChangeTodolistTitleAC({todoListId: todoListId, title: title}))
     }
 
-    const [isDark, setIsDark] = useState<boolean>(true)
 
-    const theme = createTheme({
-        palette: {
-            primary: green,
-            secondary: {
-                main: "#673ab7",
-            },
-            mode: isDark ? "dark" : "light"
-        },
-    })
 
+    const changeThemeMode = () => {
+        dispatch(changeThenModeAC({themeMode: themeMode === "light" ? "dark" : "light"}))
+    }
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
@@ -127,7 +127,7 @@ export const App = () => {
                             <MenuButton variant={"outlined"} color="inherit">Login</MenuButton>
                             <MenuButton variant={"outlined"} color="inherit">Logout</MenuButton>
                             <MenuButton background={"grey"} variant={"outlined"} color="inherit">FAQ</MenuButton>
-                            <Switch onChange={() => setIsDark(!isDark)}/>
+                            <Switch onChange={() => changeThemeMode()}/>
 
                         </Box>
                     </Toolbar>
