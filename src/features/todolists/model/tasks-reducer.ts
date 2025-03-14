@@ -1,4 +1,4 @@
-import {TasksStateType} from "../app/App.tsx";
+import {TasksStateType} from "@/app/App.tsx";
 import {AddTodoListAC, RemoveTodolistAC} from "./todolists-reducer.ts";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
 
@@ -6,12 +6,9 @@ const initialState: TasksStateType = {}
 
 //Action creators
 export const RemoveTaskAC = createAction<{ taskId: string, todoListId: string }>("tasks/removeTask")
-export const AddTaskAC = createAction(
-    "tasks/addTask",
-    (title: string, todoListId: string) => ({
-        payload: { id: nanoid(), title, todoListId }
-    })
-);
+export const AddTaskAC = createAction("tasks/addTask", (title: string, todoListId: string) => ({
+    payload: { id: nanoid(), title, todoListId }
+}));
 
 export const ChangeTaskStatusAC = createAction<{
     taskId: string,

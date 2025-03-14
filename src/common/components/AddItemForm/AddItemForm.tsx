@@ -45,7 +45,6 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
                        onChange={changeItemTitleHandler}
                        error={!!error}
                        helperText={error}
-                // className={error ? "error-input" : ""}
             />
             <IconButton disabled={!isTitleLengthValid} onClick={addItemHandler}>
                 <AddBoxIcon>+</AddBoxIcon>

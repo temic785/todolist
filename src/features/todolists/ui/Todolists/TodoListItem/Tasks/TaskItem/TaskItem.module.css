@@ -1,0 +1,8 @@
+.task {
+    font-weight: bold;
+}
+
+.task-active {
+    text-decoration: line-through;
+    opacity: 0.5;
+}

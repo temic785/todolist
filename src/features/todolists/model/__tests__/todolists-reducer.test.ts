@@ -1,5 +1,5 @@
-import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "./todolists-reducer.ts"
-import {TodoListType} from "../app/App.tsx";
+import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "../todolists-reducer.ts"
+import {TodoListType} from "../../../../app/App.tsx";
 import {expect, test} from "vitest";
 import {nanoid} from "@reduxjs/toolkit";
 
@@ -48,7 +48,7 @@ test("correct todolist should change its name", () => {
     ]
     const newTitle = "New Todolist"
 
-    const endState = todolistsReducer(startState, ChangeTodolistTitleAC(todolistId2, newTitle))
+    const endState = todolistsReducer(startState, ChangeTodolistTitleAC({todoListId: todolistId2, title: newTitle}))
 
     expect(endState[0].title).toBe("What to learn")
     expect(endState[1].title).toBe(newTitle)
@@ -64,7 +64,7 @@ test("correct filter of todolist should be changed", () => {
     ]
 
     const newFilter = "all"
-    const endState = todolistsReducer(startState, ChangeTodolistTitleAC(todolistId2, newFilter))
+    const endState = todolistsReducer(startState, ChangeTodolistTitleAC({todoListId: todolistId2,title: newFilter}))
 
     expect(endState[0].filter).toBe("all")
     expect(endState[1].filter).toBe(newFilter)

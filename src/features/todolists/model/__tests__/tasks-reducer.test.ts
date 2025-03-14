@@ -1,9 +1,9 @@
 import {beforeEach, expect, test} from "vitest";
 import {defineConfig} from "vitest/config";
 
-import {TasksStateType} from "../app/App.tsx";
-import {AddTaskAC, ChangeTaskStatusAC, RemoveTaskAC, tasksReducer, UpdateTaskNameAC} from "./tasks-reducer.ts";
-import {AddTodoListAC, RemoveTodolistAC} from "./todolists-reducer.ts";
+import {TasksStateType} from "@/app/App.tsx";
+import {AddTaskAC, ChangeTaskStatusAC, RemoveTaskAC, tasksReducer, UpdateTaskNameAC} from "../tasks-reducer.ts";
+import {AddTodoListAC, RemoveTodolistAC} from "../todolists-reducer.ts";
 
 export default defineConfig({
     test: {
@@ -31,7 +31,7 @@ beforeEach(() => {
 })
 
 test("property with todolistId should be deleted", () => {
-    const endState = tasksReducer(startState, RemoveTodolistAC({id:"todolistId2"}))
+    const endState = tasksReducer(startState, RemoveTodolistAC({id: "todolistId2"}))
 
     const keys = Object.keys(endState)
 
@@ -78,10 +78,11 @@ test("correct task should be deleted", () => {
 test("correct task should be created at correct array", () => {
     const endState = tasksReducer(
         startState,
-        AddTaskAC({
-            todoListId: "todolistId2",
-            title: "juice",
-        })
+        AddTaskAC("juice", "todolistId2")
+        // AddTaskAC({
+        //         todoListId: "todolistId2",
+        //         title: "juice",
+        //     })
     )
 
     expect(endState.todolistId1.length).toBe(3)
@@ -106,6 +107,6 @@ test("correct task should change its title", () => {
         UpdateTaskNameAC({todoListId: "todolistId2", taskId: "2", title: "New name"})
     )
     expect(endState.todolistId2[1].title).toBe("New name")
-    expect(endState.todolistId1[1].title).toBe('JS')
+    expect(endState.todolistId1[1].title).toBe("JS")
 
 })
