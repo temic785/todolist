@@ -1,4 +1,4 @@
-import {RootState} from "@/app/store.ts";
-import {TodoListType} from "@/app/App.tsx";
+import type { RootState } from "@/app/store"
+import type { Todolist } from "./todolists-slice.ts"
 
-export const selectTodolists = (state: RootState): TodoListType[] => state.todolists
+export const selectTodolists = (state: RootState): Todolist[] => state.todolists

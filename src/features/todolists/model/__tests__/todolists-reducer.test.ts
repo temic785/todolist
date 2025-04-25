@@ -1,72 +1,55 @@
-import {AddTodoListAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer} from "../todolists-reducer.ts"
-import {TodoListType} from "../../../../app/App.tsx";
-import {expect, test} from "vitest";
-import {nanoid} from "@reduxjs/toolkit";
+import { nanoid } from "@reduxjs/toolkit"
+import { beforeEach, expect, test } from "vitest"
+import {
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
+  createTodolistAC,
+  deleteTodolistAC,
+  type Todolist,
+  todolistsReducer,
+} from "../todolists-slice.ts"
 
-test("correct todolist should be removed", () => {
-    let todolistId1 = nanoid()
-    let todolistId2 = nanoid()
+let todolistId1: string
+let todolistId2: string
+let startState: Todolist[] = []
 
-    // 1. Стартовый state
-    const startState: TodoListType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"},
-    ]
+beforeEach(() => {
+  todolistId1 = nanoid()
+  todolistId2 = nanoid()
 
-    const endState = todolistsReducer(startState, RemoveTodolistAC({id: todolistId1}))
-
-    // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
-    // в массиве останется один тудулист
-    expect(endState.length).toBe(1)
-    // удалится нужный тудулист, а не любой
-    expect(endState[0].id).toBe(todolistId2)
+  startState = [
+    { id: todolistId1, title: "What to learn", filter: "all" },
+    { id: todolistId2, title: "What to buy", filter: "all" },
+  ]
 })
 
-test("correct todolist should be added", () => {
-    let todolistId1 = nanoid()
-    let todolistId2 = nanoid()
+test("correct todolist should be deleted", () => {
+  const endState = todolistsReducer(startState, deleteTodolistAC({ id: todolistId1 }))
 
-    const startState: TodoListType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"},
-    ]
-
-    const newTitle = "New Todolist"
-    const endState = todolistsReducer(startState, AddTodoListAC(newTitle))
-
-    expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTitle)
+  expect(endState.length).toBe(1)
+  expect(endState[0].id).toBe(todolistId2)
 })
 
-test("correct todolist should change its name", () => {
-    let todolistId1 = nanoid()
-    let todolistId2 = nanoid()
+test("correct todolist should be created", () => {
+  const title = "New todolist"
+  const endState = todolistsReducer(startState, createTodolistAC(title))
 
-    const startState: TodoListType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"},
-    ]
-    const newTitle = "New Todolist"
-
-    const endState = todolistsReducer(startState, ChangeTodolistTitleAC({todoListId: todolistId2, title: newTitle}))
-
-    expect(endState[0].title).toBe("What to learn")
-    expect(endState[1].title).toBe(newTitle)
+  expect(endState.length).toBe(3)
+  expect(endState[2].title).toBe(title)
 })
 
-test("correct filter of todolist should be changed", () => {
-    let todolistId1 = nanoid()
-    let todolistId2 = nanoid()
+test("correct todolist should change its title", () => {
+  const title = "New title"
+  const endState = todolistsReducer(startState, changeTodolistTitleAC({ id: todolistId2, title }))
 
-    const startState: TodoListType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"},
-    ]
-
-    const newFilter = "all"
-    const endState = todolistsReducer(startState, ChangeTodolistTitleAC({todoListId: todolistId2,title: newFilter}))
-
-    expect(endState[0].filter).toBe("all")
-    expect(endState[1].filter).toBe(newFilter)
+  expect(endState[0].title).toBe("What to learn")
+  expect(endState[1].title).toBe(title)
 })
 
+test("correct todolist should change its filter", () => {
+  const filter = "completed"
+  const endState = todolistsReducer(startState, changeTodolistFilterAC({ id: todolistId2, filter }))
+
+  expect(endState[0].filter).toBe("all")
+  expect(endState[1].filter).toBe(filter)
+})
