@@ -2,22 +2,21 @@ import { IconButton, Typography } from "@mui/material"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { TodoListType } from "@/app/App.tsx"
-import { changeTodolistTitleAC, deleteTodolistAC } from "@/features/todolists/model/todolists-slice.ts"
+import { changeTodolistTitleTC, deleteTodolistTC, DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 
 type Props = {
-  todolist: TodoListType
+  todolist: DomainTodolist
 }
 
 export const TodolistTitle = ({ todolist: { title, id } }: Props) => {
   const dispatch = useAppDispatch()
 
   const changeTodolistTitle = (title: string) => {
-    dispatch(changeTodolistTitleAC({ id, title }))
+    dispatch(changeTodolistTitleTC({ id, title }))
   }
 
   const removeTodoList = (todoListId: string) => {
-    const action = deleteTodolistAC({ id: todoListId })
+    const action = deleteTodolistTC({ id: todoListId })
     dispatch(action)
   }
   return (

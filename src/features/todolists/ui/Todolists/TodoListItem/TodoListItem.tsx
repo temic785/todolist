@@ -2,9 +2,9 @@ import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodoListItem/TodolistTitle/TodolistTitle.tsx"
 import { Tasks } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/Tasks.tsx"
 import { FilterButtons } from "@/features/todolists/ui/Todolists/TodoListItem/FilterButtons/FilterButtons.tsx"
-import { TodoListType } from "@/app/App.tsx"
 import { createTaskAC } from "@/features/todolists/model/tasks-slice.ts"
 import { AddItemForm } from "@/common/components/AddItemForm/AddItemForm.tsx"
+import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 
 export type TaskType = {
   id: string
@@ -13,7 +13,7 @@ export type TaskType = {
 }
 
 type TodoListPropsType = {
-  todolist: TodoListType
+  todolist: DomainTodolist
 }
 
 export const TodoListItem = ({ todolist }: TodoListPropsType) => {

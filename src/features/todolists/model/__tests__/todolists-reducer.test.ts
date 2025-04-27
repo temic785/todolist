@@ -5,7 +5,7 @@ import {
   changeTodolistTitleAC,
   createTodolistAC,
   deleteTodolistAC,
-  type Todolist,
+  type TodolistApi,
   todolistsReducer,
 } from "../todolists-slice.ts"
 

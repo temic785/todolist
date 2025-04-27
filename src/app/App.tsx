@@ -1,38 +1,24 @@
 import "./App.css"
-import { CssBaseline, ThemeProvider } from "@mui/material"
-import { TaskType } from "../features/todolists/ui/Todolists/TodoListItem/TodoListItem.tsx"
-import { useAppSelector } from "../common/hooks/useAppSelector.ts"
-import { selectThemeMode } from "./app-selectors.ts"
-import { getTheme } from "../common/theme/theme.ts"
-import { Header } from "@/common/components/Header/Header.tsx"
-import { Main } from "@/app/Main.tsx"
+import { selectThemeMode } from "@/app/app-slice.ts"
+import { Main } from "@/app/Main"
+import { Header } from "@/common/components/Header/Header"
 
-export type FilterValuesType = "all" | "active" | "completed"
+import CssBaseline from "@mui/material/CssBaseline"
+import { ThemeProvider } from "@mui/material/styles"
+import { getTheme, useAppSelector } from "@/common"
 
-export type TodoListType = {
-  title: string
-  id: string
-  filter: FilterValuesType
-}
-
-export type TasksStateType = {
-  [todoListId: string]: TaskType[]
-}
-export type ThemeMode = "dark" | "light"
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
 
   const theme = getTheme(themeMode)
 
   return (
-    <div className="App">
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <div className={"app"}>
         <CssBaseline />
         <Header />
         <Main />
-      </ThemeProvider>
-    </div>
+      </div>
+    </ThemeProvider>
   )
 }
-
-export default App

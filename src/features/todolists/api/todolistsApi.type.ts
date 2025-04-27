@@ -1,4 +1,4 @@
-export type Todolist = {
+export type TodolistApi = {
   id: string
   addedDate: string
   order: number

@@ -6,9 +6,8 @@ import { Box, Switch } from "@mui/material"
 import { MenuButton } from "@/common/components/MenuButton/MenuButton.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
-import { selectThemeMode } from "@/app/app-selectors.ts"
 import { filterButtonsContainerSx } from "@/common/styles/container.styles.ts"
-import { changeThemeModeAC } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectThemeMode } from "@/app/app-slice.ts"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
