@@ -2,13 +2,15 @@ import { BaseResponse, instance } from "@/common"
 import { DomainTask, GetTaskResponse, UpdateTaskModel } from "./tasksApi.type.ts"
 
 export const tasksApi = {
-  getTasks(todolistId: string) {
-    return instance.get<GetTaskResponse>(`/todo-lists/${todolistId}/tasks`)
+  getTasks(payload:{todolistId: string}) {
+    return instance.get<GetTaskResponse>(`/todo-lists/${payload.todolistId}/tasks`)
   },
-  createTask(todolistId: string, title: string) {
+  createTask(payload:{ todolistId: string, title: string }) {
+    const {todolistId,title} = payload
     return instance.post<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks`, { title })
   },
-  deleteTask(todolistId: string, taskId: string) {
+  deleteTask(payload:{ todolistId: string, taskId: string }) {
+    const {todolistId, taskId}= payload
     return instance.delete<BaseResponse>(`/todo-lists/${todolistId}/tasks/${taskId}`)
   },
   changeTaskStatus(payload: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
