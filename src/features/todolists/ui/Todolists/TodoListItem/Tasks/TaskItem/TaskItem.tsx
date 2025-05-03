@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getListItemSx } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TaskItem/TaskItem.styles.ts"
 import styles from "./TaskItem.module.css"
-import { changeTaskStatus, changeTaskTitleAC, deleteTask } from "@/features/todolists/model/tasks-slice.ts"
+import { deleteTask, updateTask } from "@/features/todolists/model/tasks-slice.ts"
 import { DomainTask } from "@/features/todolists/api/tasksApi.type.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { ChangeEvent } from "react"
@@ -22,12 +22,14 @@ export const TaskItem = ({ task, todoListId }: Props) => {
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const currentStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-    dispatch(changeTaskStatus({ ...task, status: currentStatus })
+    const domainModel = { ...task, status: currentStatus }
+    dispatch(updateTask({ taskId: task.id, todolistId: todoListId, domainModel })
     )
   }
 
-  const updateTask = (title: string) => {
-    dispatch(changeTaskTitleAC({ taskId: task.id, todolistId: todoListId, title }))
+  const updateTaskHandler = (title: string) => {
+    const domainModel = { ...task, title }
+    dispatch(updateTask({ taskId: task.id, todolistId: todoListId, domainModel }))
   }
   const isDone = task.status === TaskStatus.Completed
   return (
@@ -38,7 +40,7 @@ export const TaskItem = ({ task, todoListId }: Props) => {
           <EditableSpan
             value={task.title}
             className={isDone ? styles.taskActive : styles.task}
-            onChange={updateTask}
+            onChange={updateTaskHandler}
           />
         </Box>
         <IconButton aria-label="delete" onClick={removeTask}>
