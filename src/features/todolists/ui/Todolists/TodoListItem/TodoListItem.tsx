@@ -6,7 +6,6 @@ import { createTask } from "@/features/todolists/model/tasks-slice.ts"
 import { AddItemForm } from "@/common/components/AddItemForm/AddItemForm.tsx"
 import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 
-
 type TodoListPropsType = {
   todolist: DomainTodolist
 }
@@ -22,7 +21,7 @@ export const TodoListItem = ({ todolist }: TodoListPropsType) => {
     <div>
       <div>
         <TodolistTitle todolist={todolist} />
-        <AddItemForm addItem={addTask} />
+        <AddItemForm addItem={addTask} disabled={todolist.entityStatus === "loading"} />
         <Tasks todolist={todolist} />
         <FilterButtons todolist={todolist} />
       </div>

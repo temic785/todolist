@@ -4,9 +4,10 @@ import { IconButton, TextField } from "@mui/material"
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm = ({ addItem }: AddItemFormPropsType) => {
+export const AddItemForm = ({ addItem, disabled }: AddItemFormPropsType) => {
   const [itemTitle, setItemTitle] = useState("")
   const [error, setError] = useState(false)
 
@@ -44,8 +45,9 @@ export const AddItemForm = ({ addItem }: AddItemFormPropsType) => {
         onChange={changeItemTitleHandler}
         error={!!error}
         helperText={error}
+        disabled={disabled}
       />
-      <IconButton disabled={!isTitleLengthValid} onClick={addItemHandler}>
+      <IconButton disabled={!isTitleLengthValid || disabled} onClick={addItemHandler}>
         <AddBoxIcon>+</AddBoxIcon>
       </IconButton>
       {!isTitleLengthValid && <div style={{ color: "red" }}>Max length title is 15 characters</div>}

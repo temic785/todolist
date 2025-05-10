@@ -5,15 +5,18 @@ type EditableSpanPropsType = {
   value: string
   className?: string
   onChange: (newTitle: string) => void
+  disabled: boolean
 }
 
-export const EditableSpan = ({ value, className, onChange }: EditableSpanPropsType) => {
+export const EditableSpan = ({ value, className, onChange, disabled }: EditableSpanPropsType) => {
   const [editMode, setEditMode] = useState(false)
   const [title, setTitle] = useState("")
 
   const activateEditModeHandler = () => {
-    setEditMode(true)
-    setTitle(value)
+    if (!disabled) {
+      setEditMode(true)
+      setTitle(value)
+    }
   }
 
   const deactivateEditModeHandler = () => {

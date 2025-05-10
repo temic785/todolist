@@ -8,7 +8,7 @@ type Props = {
   todolist: DomainTodolist
 }
 
-export const TodolistTitle = ({ todolist: { title, id } }: Props) => {
+export const TodolistTitle = ({ todolist: { title, id, entityStatus } }: Props) => {
   const dispatch = useAppDispatch()
 
   const changeTodolistTitleHandler = (title: string) => {
@@ -21,8 +21,8 @@ export const TodolistTitle = ({ todolist: { title, id } }: Props) => {
   }
   return (
     <Typography align={"center"} variant={"h6"} sx={{ fontWeight: "bold" }}>
-      <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
-      <IconButton onClick={() => removeTodoList(id)}>
+      <EditableSpan value={title} onChange={changeTodolistTitleHandler} disabled={entityStatus === "loading"} />
+      <IconButton onClick={() => removeTodoList(id)} disabled={entityStatus === "loading"}>
         <DeleteIcon />
       </IconButton>
     </Typography>
