@@ -2,7 +2,7 @@ import { changeStatusAC, RequestStatus } from "@/app/app-slice"
 import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
-import { TodolistApi } from "@/features/todolists/api/todolistsApi.type.ts"
+import { TodolistApi, todolistSchema } from "@/features/todolists/api/todolistsApi.type.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -30,10 +30,12 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(changeStatusAC({ status: "loading" }))
           const res = await todolistsApi.getTodolists()
+          todolistSchema.array().parse(res.data)
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { todolists: res.data }
-        } catch (error: any) {
-          alert(JSON.stringify(error.message))
+        } catch (error) {
+          // alert(JSON.stringify(error.message))
+          handleServerNetworkError(error, dispatch)
           dispatch(changeStatusAC({ status: "failed" }))
           return rejectWithValue(null)
         } finally {
@@ -140,11 +142,4 @@ export type DomainTodolist = TodolistApi & {
   filter: FilterValues
   entityStatus: RequestStatus
 }
-
-export type Todolist = {
-  id: string
-  title: string
-  filter: FilterValues
-}
-
 export type FilterValues = "all" | "active" | "completed"

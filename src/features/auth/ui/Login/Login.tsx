@@ -10,12 +10,8 @@ import TextField from "@mui/material/TextField"
 import { getTheme, useAppSelector } from "@/common"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-
-type Inputs = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+import { LoginInputs, loginSchema } from "@/features/auth/lib/schemas/loginSchema.ts"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -28,17 +24,19 @@ export const Login = () => {
     reset,
     control,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  } = useForm<LoginInputs>({
+    defaultValues: { email: "", password: "", rememberMe: false },
+    resolver: zodResolver(loginSchema),
+  })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<LoginInputs> = () => {
     reset()
   }
 
   return (
     <Grid container justifyContent={"center"}>
       <FormControl>
-        <FormLabel>
+        <FormLabel sx={{ "&.Mui-focused": { color: theme.palette.text.secondary } }}>
           <p>
             To login get registered
             <a
@@ -60,21 +58,17 @@ export const Login = () => {
         </FormLabel>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
-            <TextField
-              label="Email"
-              margin="normal"
-              error={!!errors.email}
-              {...register("email", {
-                required: { value: true, message: "Required" },
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Incorrect email address",
-                },
-              })}
-            />
+            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
             {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
 
-            <TextField type="password" label="Password" margin="normal" {...register("password")} />
+            <TextField
+              type="password"
+              label="Password"
+              margin="normal"
+              error={!!errors.password}
+              {...register("password")}
+            />
+            {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
 
             <FormControlLabel
               label="Remember me"

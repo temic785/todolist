@@ -2,7 +2,7 @@ import { changeStatusAC } from "@/app/app-slice"
 import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
 import { tasksApi } from "../api/tasksApi"
 import { ResultCode } from "@/common/enums/enums.ts"
-import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.type.ts"
+import { DomainTask, domainTaskSchema, UpdateTaskModel } from "@/features/todolists/api/tasksApi.type.ts"
 import { RootState } from "@/app/store.ts"
 import { createTodolist, deleteTodolist } from "@/features/todolists/model/todolists-slice.ts"
 
@@ -18,9 +18,11 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(changeStatusAC({ status: "loading" }))
           const res = await tasksApi.getTasks({ todolistId })
+          domainTaskSchema.array().parse(res.data.items)
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { tasks: res.data.items, todolistId }
         } catch (error) {
+          handleServerNetworkError(error, dispatch)
           dispatch(changeStatusAC({ status: "failed" }))
           return rejectWithValue(null)
         }
