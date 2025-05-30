@@ -7,17 +7,18 @@ import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import Grid from "@mui/material/Grid2"
 import TextField from "@mui/material/TextField"
-import { getTheme, useAppSelector } from "@/common"
+import { getTheme, useAppDispatch, useAppSelector } from "@/common"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
 import { LoginInputs, loginSchema } from "@/features/auth/lib/schemas/loginSchema.ts"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { login } from "@/features/auth/model/auth-slice.ts"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
 
   const theme = getTheme(themeMode)
-
+  const dispatch = useAppDispatch()
   const {
     register,
     handleSubmit,
@@ -29,9 +30,13 @@ export const Login = () => {
     resolver: zodResolver(loginSchema),
   })
 
-  const onSubmit: SubmitHandler<LoginInputs> = () => {
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    dispatch(login(data))
     reset()
   }
+  // if (isLoggedIn) {
+  //   return <Navigate to={Path.Main} />
+  // }
 
   return (
     <Grid container justifyContent={"center"}>

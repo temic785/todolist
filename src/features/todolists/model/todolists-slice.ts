@@ -3,6 +3,7 @@ import { createAppSlice, handleServerAppError, handleServerNetworkError } from "
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { TodolistApi, todolistSchema } from "@/features/todolists/api/todolistsApi.type.ts"
+import { clearData } from "@/common"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -24,6 +25,9 @@ export const todolistsSlice = createAppSlice({
         todolist.entityStatus = action.payload.entityStatus
       }
     }),
+    // clearData: create.reducer(() => {
+    //   return [...initialState]
+    // }),
     //thunks (async action)
     fetchTodolistTC: create.asyncThunk(
       async (_arg, { dispatch, rejectWithValue }) => {
@@ -125,6 +129,11 @@ export const todolistsSlice = createAppSlice({
       },
     ),
   }),
+  extraReducers: (builder) => {
+    builder.addCase(clearData, () => {
+      return []
+    })
+  },
 })
 
 export const todolistsReducer = todolistsSlice.reducer

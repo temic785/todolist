@@ -5,6 +5,7 @@ import { ResultCode } from "@/common/enums/enums.ts"
 import { DomainTask, domainTaskSchema, UpdateTaskModel } from "@/features/todolists/api/tasksApi.type.ts"
 import { RootState } from "@/app/store.ts"
 import { createTodolist, deleteTodolist } from "@/features/todolists/model/todolists-slice.ts"
+import { clearData } from "@/common"
 
 export const tasksSlice = createAppSlice({
   name: "tasks",
@@ -99,7 +100,6 @@ export const tasksSlice = createAppSlice({
         if (!task) {
           return rejectWithValue(null)
         }
-        console.log("Domain ", domainModel)
         const model: UpdateTaskModel = {
           description: task.description,
           title: task.title,
@@ -109,7 +109,6 @@ export const tasksSlice = createAppSlice({
           status: task.status,
           ...domainModel,
         }
-        console.log("Model ", model)
 
         try {
           dispatch(changeStatusAC({ status: "loading" }))
@@ -146,6 +145,9 @@ export const tasksSlice = createAppSlice({
       })
       .addCase(deleteTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id]
+      })
+      .addCase(clearData, () => {
+        return {}
       })
   },
 })

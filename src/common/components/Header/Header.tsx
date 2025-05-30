@@ -8,14 +8,21 @@ import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { filterButtonsContainerSx } from "@/common/styles/container.styles.ts"
 import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice.ts"
+import { logout, selectAuth } from "@/features/auth/model/auth-slice.ts"
+import { clearData } from "@/common"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectStatus)
   const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(selectAuth)
 
   const changeThemeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
+  }
+  const logoutHandler = () => {
+    dispatch(clearData())
+    dispatch(logout())
   }
 
   return (
@@ -25,12 +32,11 @@ export const Header = () => {
           <MenuIcon />
         </IconButton>
         <Box>
-          <MenuButton variant={"outlined"} color="inherit">
-            Login
-          </MenuButton>
-          <MenuButton variant={"outlined"} color="inherit">
-            Logout
-          </MenuButton>
+          {isLoggedIn && (
+            <MenuButton onClick={logoutHandler} variant={"outlined"} color="inherit">
+              Logout
+            </MenuButton>
+          )}
           <MenuButton background={"grey"} variant={"outlined"} color="inherit">
             FAQ
           </MenuButton>
