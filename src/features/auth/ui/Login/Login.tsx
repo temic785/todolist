@@ -34,9 +34,6 @@ export const Login = () => {
     dispatch(login(data))
     reset()
   }
-  // if (isLoggedIn) {
-  //   return <Navigate to={Path.Main} />
-  // }
 
   return (
     <Grid container justifyContent={"center"}>

@@ -63,12 +63,13 @@ export const authSlice = createAppSlice({
     ),
     me: create.asyncThunk(
       async (_data, { dispatch, rejectWithValue }) => {
+        debugger
         try {
           const res = await authApi.me()
           if (res.data.resultCode === ResultCode.Success) {
             return { isLoggedIn: true }
           } else {
-            handleServerNetworkError(res.data.messages, dispatch)
+            handleServerNetworkError(res.data.messages[0], dispatch)
             return rejectWithValue(null)
           }
         } catch (error) {
