@@ -1,6 +1,6 @@
 import { changeStatusAC, RequestStatus } from "@/app/app-slice"
 import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
-import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
+import { _todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { TodolistApi, todolistSchema } from "@/features/todolists/api/todolistsApi.type.ts"
 import { clearData } from "@/common"
@@ -25,15 +25,11 @@ export const todolistsSlice = createAppSlice({
         todolist.entityStatus = action.payload.entityStatus
       }
     }),
-    // clearData: create.reducer(() => {
-    //   return [...initialState]
-    // }),
-    //thunks (async action)
     fetchTodolistTC: create.asyncThunk(
       async (_arg, { dispatch, rejectWithValue }) => {
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await todolistsApi.getTodolists()
+          const res = await _todolistsApi.getTodolists()
           todolistSchema.array().parse(res.data)
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { todolists: res.data }
@@ -58,7 +54,7 @@ export const todolistsSlice = createAppSlice({
       async (title: string, { dispatch, rejectWithValue }) => {
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await todolistsApi.postCreateTodolist({ title })
+          const res = await _todolistsApi.createTodolist({ title })
           if (res.data.resultCode === ResultCode.Success) {
             return { todolist: res.data.data.item }
           } else {
@@ -83,7 +79,7 @@ export const todolistsSlice = createAppSlice({
         try {
           dispatch(changeStatusAC({ status: "loading" }))
           dispatch(changeTodolistStatus({ id, entityStatus: "loading" }))
-          const res = await todolistsApi.deleteTodolist(id)
+          const res = await _todolistsApi.deleteTodolist(id)
           if (res.data.resultCode === ResultCode.Success) {
             return { id }
           } else {
@@ -111,7 +107,7 @@ export const todolistsSlice = createAppSlice({
         const { id, title } = payload
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          await todolistsApi.putChangeTodolistTitle({ id, title })
+          await _todolistsApi.changeTodolistTitle({ id, title })
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { id, title }
         } catch (error) {

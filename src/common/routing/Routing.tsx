@@ -19,7 +19,6 @@ export const Routing = () => {
     <Routes>
       <Route element={<ProtectedRoute isAllowed={isLoggedIn} />}>
         <Route path={Path.Main} element={<Main />} />
-        <Route path={Path.Faq} element={<h1>Faq</h1>} />
       </Route>
 
       <Route element={<ProtectedRoute isAllowed={!isLoggedIn} redirectPath={Path.Main} />}>

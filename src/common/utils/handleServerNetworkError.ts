@@ -5,7 +5,6 @@ import z from "zod"
 
 export const handleServerNetworkError = (error: unknown, dispatch: Dispatch) => {
   let errorMessage
-  debugger
   switch (true) {
     case axios.isAxiosError(error):
       errorMessage = error.response?.data?.message || error.message

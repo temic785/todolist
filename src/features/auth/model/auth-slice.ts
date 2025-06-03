@@ -63,7 +63,6 @@ export const authSlice = createAppSlice({
     ),
     me: create.asyncThunk(
       async (_data, { dispatch, rejectWithValue }) => {
-        debugger
         try {
           const res = await authApi.me()
           if (res.data.resultCode === ResultCode.Success) {

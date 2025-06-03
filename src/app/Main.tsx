@@ -1,15 +1,12 @@
 import { Container, Grid2 } from "@mui/material"
 import { AddItemForm } from "@/common/components/AddItemForm/AddItemForm.tsx"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { Todolists } from "@/features/todolists/ui/Todolists/Todolists.tsx"
-import { createTodolist } from "@/features/todolists/model/todolists-slice.ts"
+import { useCreateTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
 
 export const Main = () => {
-  const dispatch = useAppDispatch()
+  const [createTodolist] = useCreateTodolistMutation()
 
-  const addTodoList = (title: string) => {
-    dispatch(createTodolist(title))
-  }
+  const addTodoList = (title: string) => createTodolist(title)
 
   return (
     <Container>
