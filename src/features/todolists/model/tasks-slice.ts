@@ -1,6 +1,6 @@
 import { changeStatusAC } from "@/app/app-slice"
 import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
-import { tasksApi } from "../api/tasksApi"
+import { _tasksApi } from "../api/tasksApi"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { DomainTask, domainTaskSchema, UpdateTaskModel } from "@/features/todolists/api/tasksApi.type.ts"
 import { RootState } from "@/app/store.ts"
@@ -18,7 +18,7 @@ export const tasksSlice = createAppSlice({
       async (todolistId: string, { dispatch, rejectWithValue }) => {
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.getTasks({ todolistId })
+          const res = await _tasksApi.getTasks({ todolistId })
           domainTaskSchema.array().parse(res.data.items)
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { tasks: res.data.items, todolistId }
@@ -39,7 +39,7 @@ export const tasksSlice = createAppSlice({
         const { todolistId, taskId } = payload
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.deleteTask(payload)
+          const res = await _tasksApi.deleteTask(payload)
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))
             return { todolistId, taskId }
@@ -66,7 +66,7 @@ export const tasksSlice = createAppSlice({
       async (payload: { todolistId: string; title: string }, { dispatch, rejectWithValue }) => {
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.createTask(payload)
+          const res = await _tasksApi.createTask(payload)
           if (res.data.resultCode === ResultCode.Success) {
             return { task: res.data.data.item }
           } else {
@@ -112,7 +112,7 @@ export const tasksSlice = createAppSlice({
 
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.updateTask({ todolistId, taskId, model })
+          const res = await _tasksApi.updateTask({ todolistId, taskId, model })
           if (res.data.resultCode === ResultCode.Success) {
             return { task: res.data.data.item }
           } else {

@@ -7,22 +7,29 @@ import { MenuButton } from "@/common/components/MenuButton/MenuButton.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { filterButtonsContainerSx } from "@/common/styles/container.styles.ts"
-import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice.ts"
-import { logout, selectAuth } from "@/features/auth/model/auth-slice.ts"
-import { clearData } from "@/common"
+import { changeThemeModeAC, selectIsLoggedIn, selectStatus, selectThemeMode, setIsLoggedIn } from "@/app/app-slice.ts"
+import { AUTH_TOKEN, clearData } from "@/common"
+import { useLogoutMutation } from "@/features/auth/api/authApi.ts"
+import { ResultCode } from "@/common/enums/enums.ts"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectStatus)
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectAuth)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const [logoutMutation] = useLogoutMutation()
 
   const changeThemeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
   const logoutHandler = () => {
     dispatch(clearData())
-    dispatch(logout())
+    logoutMutation().then((res) => {
+      if (res?.data?.resultCode === ResultCode.Success) {
+        localStorage.removeItem(AUTH_TOKEN)
+        dispatch(setIsLoggedIn({ isLoggedIn: false }))
+      }
+    })
   }
 
   return (

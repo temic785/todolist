@@ -2,14 +2,13 @@ import { Box, IconButton, ListItem } from "@mui/material"
 import Checkbox from "@mui/material/Checkbox"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getListItemSx } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TaskItem/TaskItem.styles.ts"
 import styles from "./TaskItem.module.css"
-import { deleteTask, updateTask } from "@/features/todolists/model/tasks-slice.ts"
 import { DomainTask } from "@/features/todolists/api/tasksApi.type.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { ChangeEvent } from "react"
 import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
+import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/features/todolists/api/tasksApi.ts"
 
 type Props = {
   task: DomainTask
@@ -17,19 +16,20 @@ type Props = {
 }
 
 export const TaskItem = ({ task, todoList }: Props) => {
-  const dispatch = useAppDispatch()
   const entityStatus = todoList.entityStatus
-  const removeTask = () => dispatch(deleteTask({ todolistId: todoList.id, taskId: task.id }))
+  const [deleteTask] = useDeleteTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
+  const removeTask = () => deleteTask({ todoListId: todoList.id, taskId: task.id })
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const currentStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
     const domainModel = { ...task, status: currentStatus }
-    dispatch(updateTask({ taskId: task.id, todolistId: todoList.id, domainModel }))
+    updateTask({ taskId: task.id, todolistId: todoList.id, model: domainModel })
   }
 
   const updateTaskHandler = (title: string) => {
     const domainModel = { ...task, title }
-    dispatch(updateTask({ taskId: task.id, todolistId: todoList.id, domainModel }))
+    updateTask({ taskId: task.id, todolistId: todoList.id, model: domainModel })
   }
   const isDone = task.status === TaskStatus.Completed
   return (
