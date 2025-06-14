@@ -2,7 +2,7 @@ import { BaseResponse, instance } from "@/common"
 import { DomainTask, GetTaskResponse, UpdateTaskModel } from "./tasksApi.type.ts"
 import { baseApi } from "@/features/todolists/api/baseApi.ts"
 
-export const taskApi = baseApi.injectEndpoints({
+export const tasksApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTasks: builder.query<GetTaskResponse, string>({
       query: (todolistId) => `/todo-lists/${todolistId}/tasks`,
@@ -40,7 +40,7 @@ export const taskApi = baseApi.injectEndpoints({
     }),
   }),
 })
-export const { useGetTasksQuery, useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = taskApi
+export const { useGetTasksQuery, useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = tasksApi
 
 export const _tasksApi = {
   getTasks(payload: { todolistId: string }) {

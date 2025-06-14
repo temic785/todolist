@@ -1,6 +1,6 @@
 import { SxProps } from "@mui/material"
 
-export const filterButtonsContainerSx: SxProps = {
+export const containerSx: SxProps = {
   display: "flex",
   justifyContent: "space-between",
 }
