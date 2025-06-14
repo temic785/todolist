@@ -1,9 +1,9 @@
-import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 import { List } from "@mui/material"
 import { TaskItem } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TaskItem/TaskItem.tsx"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
 import { TasksSkeleton } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TasksSkeleton/TasksSkeleton.tsx"
+import { DomainTodolist } from "@/features/todolists/ui/Todolists/lib/types"
 
 type Props = {
   todolist: DomainTodolist
