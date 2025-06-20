@@ -7,19 +7,21 @@ import styles from "./TaskItem.module.css"
 import { DomainTask } from "@/features/todolists/api/tasksApi.type.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { ChangeEvent } from "react"
-import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/features/todolists/api/tasksApi.ts"
+import { useUpdateTaskMutation } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTodolist } from "@/features/todolists/ui/Todolists/lib/types"
 
 type Props = {
   task: DomainTask
   todoList: DomainTodolist
+  onRemove: (taskId: string) => void
 }
 
-export const TaskItem = ({ task, todoList }: Props) => {
+export const TaskItem = ({ task, todoList, onRemove }: Props) => {
   const entityStatus = todoList.entityStatus
-  const [deleteTask] = useDeleteTaskMutation()
   const [updateTask] = useUpdateTaskMutation()
-  const removeTask = () => deleteTask({ todoListId: todoList.id, taskId: task.id })
+  const removeTask = () => {
+    onRemove(task.id)
+  }
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const currentStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
