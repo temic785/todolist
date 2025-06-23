@@ -12,89 +12,121 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
 import { LoginInputs, loginSchema } from "@/features/auth/lib/schemas/loginSchema.ts"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useLoginMutation } from "@/features/auth/api/authApi.ts"
+import { useLazyCaptchaQuery, useLoginMutation } from "@/features/auth/api/authApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
+import { Box, Typography } from "@mui/material"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const [loginMutation] = useLoginMutation()
+  const [fetchCaptcha, { data: captchaData }] = useLazyCaptchaQuery()
   const theme = getTheme(themeMode)
   const dispatch = useAppDispatch()
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     control,
     formState: { errors },
   } = useForm<LoginInputs>({
-    defaultValues: { email: "", password: "", rememberMe: false },
+    defaultValues: { email: "", password: "", rememberMe: false, captcha: "" },
     resolver: zodResolver(loginSchema),
   })
-
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     loginMutation(data).then((res) => {
       if (res?.data?.resultCode === ResultCode.Success) {
         localStorage.setItem(AUTH_TOKEN, res.data.data.token)
         dispatch(setIsLoggedIn({ isLoggedIn: true }))
+      } else if (res?.data?.resultCode === ResultCode.CaptchaError) {
+        fetchCaptcha()
+        setValue("captcha", "")
+      } else {
+        reset()
       }
     })
-    reset()
   }
 
   return (
     <Grid container justifyContent={"center"}>
-      <FormControl>
-        <FormLabel sx={{ "&.Mui-focused": { color: theme.palette.text.secondary } }}>
-          <p>
-            To login get registered
-            <a
-              style={{ color: theme.palette.primary.main, marginLeft: "5px" }}
-              href="https://social-network.samuraijs.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              here
-            </a>
-          </p>
-          <p>or use common test account credentials:</p>
-          <p>
-            <b>Email:</b> free@samuraijs.com
-          </p>
-          <p>
-            <b>Password:</b> free
-          </p>
-        </FormLabel>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup>
-            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
-            {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
+      <Box
+        className={s.authContainer}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <FormControl>
+          <FormLabel sx={{ "&.Mui-focused": { color: theme.palette.text.secondary } }}>
+            <p>
+              To login get registered
+              <a
+                style={{ color: theme.palette.primary.main, marginLeft: "5px" }}
+                href="https://social-network.samuraijs.com"
+                target="_blank"
+                rel="noreferrer"
+              >
+                here
+              </a>
+            </p>
+            <p>or use common test account credentials:</p>
+            <p>
+              <b>Email:</b> free@samuraijs.com
+            </p>
+            <p>
+              <b>Password:</b> free
+            </p>
+          </FormLabel>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup>
+              <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
+              {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
 
-            <TextField
-              type="password"
-              label="Password"
-              margin="normal"
-              error={!!errors.password}
-              {...register("password")}
-            />
-            {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
+              <TextField
+                type="password"
+                label="Password"
+                margin="normal"
+                error={!!errors.password}
+                {...register("password")}
+              />
+              {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
 
-            <FormControlLabel
-              label="Remember me"
-              control={
-                <Controller
-                  name="rememberMe"
-                  control={control}
-                  render={({ field: { value, ...rest } }) => <Checkbox {...rest} checked={value} />}
-                />
-              }
-            />
+              <FormControlLabel
+                label="Remember me"
+                control={
+                  <Controller
+                    name="rememberMe"
+                    control={control}
+                    render={({ field: { value, ...rest } }) => <Checkbox {...rest} checked={value} />}
+                  />
+                }
+              />
 
-            <Button type="submit" variant="contained" color="primary">
-              Login
-            </Button>
-          </FormGroup>
-        </form>
-      </FormControl>
+              {captchaData && (
+                <Box
+                  className={s.captchaContainer}
+                  sx={{
+                    backgroundColor: theme.palette.background.paper,
+                    border: `1px solid ${theme.palette.divider}`,
+                  }}
+                >
+                  <Typography variant="subtitle2" className={s.captchaTitle}>
+                    Enter the characters from the image
+                  </Typography>
+
+                  <img src={captchaData.url} alt="captcha" className={s.captchaImage} />
+
+                  <TextField label="Captcha" variant="outlined" {...register("captcha")} />
+                </Box>
+              )}
+
+              <Button type="submit" variant="contained" color="primary">
+                Login
+              </Button>
+            </FormGroup>
+          </form>
+        </FormControl>
+      </Box>
     </Grid>
   )
 }
