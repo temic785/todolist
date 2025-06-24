@@ -27,9 +27,6 @@ export const TasksPagination = ({ totalCount, page, setPage }: Props) => {
           className={styles.pagination}
         />
       )}
-      {/*<div className={styles.totalCount}>*/}
-      {/*  <Typography variant="caption">Total: {totalCount}</Typography>*/}
-      {/*</div>*/}
     </>
   )
 }

@@ -25,7 +25,6 @@ export const baseQueryWithZodValidation: (baseQuery: TBaseQuery) => TBaseQuery =
     const zodSchema = extraOptions?.dataSchema
 
     const { data } = returnValue
-    debugger
     // Check if both 'data' and 'zodSchema' are defined
     if (data && zodSchema) {
       // throws Validation error if the 'data' fails validation.
