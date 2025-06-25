@@ -4,7 +4,6 @@ import { Box, LinearProgress, Switch } from "@mui/material"
 import { MenuButton } from "@/common/components/MenuButton/MenuButton.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
-import { containerSx } from "@/common/styles/container.styles.ts"
 import { changeThemeModeAC, selectIsLoggedIn, selectStatus, selectThemeMode, setIsLoggedIn } from "@/app/app-slice.ts"
 import { AUTH_TOKEN } from "@/common"
 import { useLogoutMutation } from "@/features/auth/api/authApi.ts"
@@ -37,7 +36,7 @@ export const Header = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar sx={containerSx}>
+      <Toolbar sx={{ display: "flex", justifyContent: "end" }}>
         <Box>
           {isLoggedIn && (
             <MenuButton onClick={logoutHandler} variant={"outlined"} color="inherit">

@@ -1,15 +1,14 @@
 import { BaseResponse } from "@/common"
 import { DomainTask, GetTaskResponse, getTasksScheme, UpdateTaskModel } from "./tasksApi.type.ts"
 import { baseApi } from "@/features/todolists/api/baseApi.ts"
-import { PAGE_SIZE } from "@/common/constants/constants.ts"
 
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getTasks: build.query<GetTaskResponse, { todolistId: string; params: { page: number } }>({
+    getTasks: build.query<GetTaskResponse, { todolistId: string; params: { count: number; page: number } }>({
       query: ({ todolistId, params }) => {
         return {
           url: `/todo-lists/${todolistId}/tasks`,
-          params: { ...params, count: PAGE_SIZE },
+          params,
         }
       },
       extraOptions: { dataSchema: getTasksScheme },
@@ -51,7 +50,7 @@ export const tasksApi = baseApi.injectEndpoints({
             dispatch(
               tasksApi.util.updateQueryData(
                 "getTasks",
-                { todolistId: queryArgument.todolistId, params: { page: arg.params.page } },
+                { todolistId: queryArgument.todolistId, params: { page: arg.params.page, count: arg.params.count } },
                 (state) => {
                   const index = state.items.findIndex((task) => task.id === queryArgument.taskId)
                   if (index !== -1) {
@@ -76,4 +75,10 @@ export const tasksApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useGetTasksQuery, useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = tasksApi
+export const {
+  useGetTasksQuery,
+  useCreateTaskMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+  useLazyGetTasksQuery,
+} = tasksApi

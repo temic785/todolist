@@ -1,2 +1,2 @@
 export const AUTH_TOKEN = "auth-token"
-export const PAGE_SIZE = 6
+export const PAGE_SIZE = 5

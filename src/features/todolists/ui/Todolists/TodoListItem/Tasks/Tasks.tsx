@@ -4,56 +4,64 @@ import { TaskStatus } from "@/common/enums/enums.ts"
 import { useDeleteTaskMutation, useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
 import { TasksSkeleton } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TasksSkeleton/TasksSkeleton.tsx"
 import { DomainTodolist } from "@/features/todolists/ui/Todolists/lib/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { TasksPagination } from "@/features/todolists/ui/Todolists/TodoListItem/Tasks/TasksPagination/TasksPagination.tsx"
+import { PAGE_SIZE } from "@/common/constants/constants.ts"
+import { setAppError } from "@/app/app-slice.ts"
+import { useAppDispatch } from "@/common"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: Props) => {
-  const [page, setPage] = useState(1)
   const { id, filter } = todolist
+  const [page, setPage] = useState(1)
+  const { data, isLoading } = useGetTasksQuery({ todolistId: id, params: { count: 1000, page: 1 } }, { skip: !id })
   const [deleteTask] = useDeleteTaskMutation()
-  const { data, isLoading } = useGetTasksQuery({ todolistId: id, params: { page } }, { skip: !id })
-  let filteredTasks = data?.items
+  const dispatch = useAppDispatch()
+  const allTasks = data?.items ?? []
 
-  if (filter === "active") {
-    filteredTasks = filteredTasks?.filter((t) => t.status === TaskStatus.New)
-  }
-  if (filter === "completed") {
-    filteredTasks = filteredTasks?.filter((t) => t.status === TaskStatus.Completed)
-  }
+  useEffect(() => {
+    setPage(1)
+  }, [filter])
+
+  const filteredTasks = allTasks.filter((task) => {
+    if (filter === "active") return task.status === TaskStatus.New
+    if (filter === "completed") return task.status === TaskStatus.Completed
+    return true
+  })
+
+  const paginatedTasks = filteredTasks.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const handleRemoveTask = async (taskId: string) => {
     try {
       await deleteTask({ todoListId: id, taskId }).unwrap()
-      if (filteredTasks?.length === 1 && page > 1) {
+      if (paginatedTasks?.length === 1 && page > 1) {
         setPage(page - 1)
       }
-    } catch (error) {
-      console.error("Failed to delete task", error)
+    } catch (e) {
+      console.log(e)
+      dispatch(setAppError({ error: "Delete task failed" }))
     }
   }
 
-  if (isLoading) {
-    return <TasksSkeleton />
-  }
+  if (isLoading) return <TasksSkeleton />
 
   return (
     <>
-      {filteredTasks?.length === 0 ? (
+      {paginatedTasks.length === 0 ? (
         <Typography variant="subtitle1" color="textSecondary">
           No tasks to show
         </Typography>
       ) : (
         <>
           <List>
-            {filteredTasks?.map((task) => (
+            {paginatedTasks.map((task) => (
               <TaskItem key={task.id} task={task} todoList={todolist} onRemove={handleRemoveTask} />
             ))}
           </List>
-          <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
+          <TasksPagination totalCount={filteredTasks.length} page={page} setPage={setPage} />
         </>
       )}
     </>
