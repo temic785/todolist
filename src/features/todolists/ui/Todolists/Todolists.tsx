@@ -24,7 +24,7 @@ export const Todolists = () => {
       {data?.map((todolist) => {
         return (
           <Grid2 key={todolist.id}>
-            <Paper elevation={4} sx={{ p: "20px" }}>
+            <Paper elevation={4} sx={{ p: "20px", borderTop: "1px solid rgba(0,0,0,0.1)" }}>
               <TodoListItem todolist={todolist} />
             </Paper>
           </Grid2>

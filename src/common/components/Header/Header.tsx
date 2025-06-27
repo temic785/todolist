@@ -46,7 +46,7 @@ export const Header = () => {
           <MenuButton background={"grey"} variant={"outlined"} color="inherit">
             FAQ
           </MenuButton>
-          <Switch onChange={() => changeThemeMode()} />
+          <Switch color={"secondary"} onChange={() => changeThemeMode()} />
         </Box>
       </Toolbar>
       {status === "loading" && <LinearProgress />}
