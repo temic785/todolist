@@ -3,7 +3,7 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react-swc"
 
 export default defineConfig({
-  base: "/todolist/",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {

@@ -7,7 +7,6 @@ import { HashRouter } from "react-router"
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    {/*<BrowserRouter>*/}
     <HashRouter>
       <App />
     </HashRouter>
